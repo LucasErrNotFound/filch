@@ -25,7 +25,7 @@ enum Commands {
 
         /// file path or file name
         #[arg(long, requires("listen"))]
-        filepath: String,
+        filename: String,
 
         /// Delete Clipboard's Data 
         #[arg(long)]
@@ -37,9 +37,9 @@ fn main() {
     let args = Cli::parse();
 
     match &args.command {
-        Commands::start{listen, delete, filepath} => {
+        Commands::start{listen, delete, filename} => {
             if *listen {
-                listen_clipboard_data::listen_data(filepath.to_string());
+                listen_clipboard_data::listen_data(filename.to_string());
             }
             else if *delete {
                 delete_clipboard_data::delete_data();

@@ -3,8 +3,8 @@ use spinners::{Spinner, Spinners};
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 
-pub fn listen_data(filename: String) {
-    let loading = Spinner::new(Spinners::Dots, "I'm now listening for data...".to_string());
+pub fn listen_data(filename: String) -> std::io::Result<()> {
+    let _loading = Spinner::new(Spinners::Dots, "I'm now listening for data...".to_string());
     let clipboard = Clipboard::new().unwrap();
 
     loop {
@@ -16,8 +16,7 @@ pub fn listen_data(filename: String) {
             ).unwrap();
 
         let val = String::from_utf8(val).unwrap();
-        store_file(val, filename.clone());
-        // println!("\n{}", val);
+        store_file(val, filename.clone())?;
     }
 }
 
