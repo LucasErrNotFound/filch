@@ -23,12 +23,8 @@ enum Commands {
         #[arg(long)]
         listen: bool,
 
-        /// Initiate file store 
-        #[arg(long, requires("listen"))]
-        filestore: bool,
-
         /// file path or file name
-        #[arg(long, requires("filestore"))]
+        #[arg(long, requires("listen"))]
         filepath: String,
 
         /// Delete Clipboard's Data 
@@ -40,12 +36,12 @@ enum Commands {
 fn main() {
     let args = Cli::parse();
 
-    match args.command {
-        Commands::start{listen, delete, filestore, filepath} => {
-            if listen && filestore {
-                listen_clipboard_data::listen_data(filepath);
+    match &args.command {
+        Commands::start{listen, delete, filepath} => {
+            if *listen {
+                listen_clipboard_data::listen_data(filepath.to_string());
             }
-            else if delete {
+            else if *delete {
                 delete_clipboard_data::delete_data();
             }
             else {
