@@ -7,24 +7,28 @@ use std::io::{BufWriter, Write};
 pub fn listen_data(filename: String) -> std::io::Result<()> {
     let _loading: Spinner = Spinner::new(Spinners::Dots, "I'm now listening for data...".to_string());
     let clipboard: Clipboard = Clipboard::new().unwrap();
+    let utc: DateTime<Utc> = Utc::now();
+    let local: DateTime<Local> = Local::now();
 
     loop {
-        let val = clipboard
+        let val: Vec<u8> = clipboard
             .load_wait(
                 clipboard.setter.atoms.clipboard,
                 clipboard.setter.atoms.string,
                 clipboard.setter.atoms.property,
             ).unwrap();
 
-        let val = String::from_utf8(val).unwrap();
-        store_file(val, filename.clone())?;
+        let val: String = String::from_utf8(val).unwrap();
+        store_file(&val, &filename, &utc.to_string(), &local.to_string())?;
+
+        println!("\n\n{}", utc);
+        println!("{}", local);
+        println!("\n=====> {}\n", val);
     }
 }
 
-fn store_file(data: String, FILENAME: String) -> std::io::Result<()> {
-    let utc: DateTime<Utc> = Utc::now();
-    let local: DateTime<Local> = Local::now();
-    let file_path: String = FILENAME;
+fn store_file(data: &String, FILENAME: &String, utc: &String, local: &String) -> std::io::Result<()> {
+    let file_path: &String = FILENAME;
 
     let file = OpenOptions::new()
         .append(true)
