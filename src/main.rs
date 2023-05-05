@@ -34,7 +34,7 @@ enum Commands {
 }
 
 fn main() {
-    let args = Cli::parse();
+    let args: Cli = Cli::parse();
 
     match &args.command {
         Commands::start{listen, delete, filename} => {
