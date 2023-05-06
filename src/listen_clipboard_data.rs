@@ -29,7 +29,6 @@ pub fn listen_data(filename: String) -> std::io::Result<()> {
 
 fn store_file(data: &String, FILENAME: &String, utc: &String, local: &String) -> std::io::Result<()> {
     let file_path: &String = FILENAME;
-
     let file = OpenOptions::new()
         .append(true)
         .write(true)
